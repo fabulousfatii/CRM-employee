@@ -2,16 +2,11 @@ import React, { useEffect, useState } from 'react';
 import { User, Phone, Mail, Calendar, Building2, UserCircle, Activity } from 'lucide-react';
 import { useParams } from "react-router-dom";
 import axios from 'axios';
-import useHook from '../hook/useHook';
+import useHook from '../../hook/useHook';
+import TeamSidebar from '../../components/Sidebar/TeamSidebar';
 
 const EmployeeDetails = () => {
-  // const [employees, setEmployees] = useState([]);
-  // useEffect(() => {
-  //   axios
-  //     .get("/api/employees")
-  //     .then((response) => setEmployees(response.data))
-  //     .catch((error) => console.error(error));
-  // },[]);
+ 
 
  const {employees}= useHook()
   const {id}=useParams()
@@ -33,6 +28,7 @@ const EmployeeDetails = () => {
 
   return (
     <div className=" min-h-screen bg-gray-50 p-8 w-screen h-screen flex justify-end ">
+      <TeamSidebar/>
       <section className="max-w-2xl mx-auto w-[80vw] h-[80%] border-blue-500">
         <header>
           <h1 className="text-2xl font-bold text-gray-800">Employee Profile</h1>

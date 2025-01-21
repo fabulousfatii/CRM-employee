@@ -6,7 +6,7 @@ dotenv.config();
 
 const connectdb= async()=> {
   try {
-    await mongoose.connect(process.env.MONGO_DB);
+    await mongoose.connect(process.env.MONGO_DB,);
     console.log("connected");
     
   } catch (error) {
@@ -14,7 +14,6 @@ const connectdb= async()=> {
     
   }
 
-  // use `await mongoose.connect('mongodb://user:password@127.0.0.1:27017/test');` if your database has auth enabled
 }
 
 module.exports= connectdb
