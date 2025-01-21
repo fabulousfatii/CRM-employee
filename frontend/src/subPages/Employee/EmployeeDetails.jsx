@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { User, Phone, Mail, Calendar, Building2, UserCircle, Activity } from 'lucide-react';
 import { useParams } from "react-router-dom";
 import axios from 'axios';
-import useHook from '../../hook/useHook';
+import useHook from '../../hook/UseHook';
 import TeamSidebar from '../../components/sidebar/TeamSidebar';
 
 const EmployeeDetails = () => {

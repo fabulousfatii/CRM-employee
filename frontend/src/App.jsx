@@ -1,7 +1,7 @@
 
 import TeamSidebar from './components/sidebar/TeamSidebar';
 import {Link} from "react-router-dom"
-import useHook from './hook/useHook';
+import useHook from './hook/UseHook';
 
 const App = () => {
  
