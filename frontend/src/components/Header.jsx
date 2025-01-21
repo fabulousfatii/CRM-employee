@@ -1,11 +1,13 @@
 import React from 'react'
+import logo2 from '../assets/logo2.jpg'
 
 
 function Header() {
     return (
-        <div className='fixed top-0 z-20 w-full px-4 font-bold text-lg text-blue-600 bg-white h-9'>
-            
-            <h2>CRM-Employee</h2>
+        <div className='fixed top-0 z-20 w-full px-4 font-bold text-lg text-blue-600 bg-white h-10'>
+            <div className='max-w-48 h-10 '>
+                <img className=' object-cover object-center transform  ' src={logo2} alt="Logo" />
+            </div>
         </div>
     )
 }

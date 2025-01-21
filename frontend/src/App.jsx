@@ -9,7 +9,7 @@ const App = () => {
   
   
   return (
-  <main className='w-full h-screen bg-blue-800 '> 
+  <main className='w-full h-screen bg-[#362e69] '> 
   <TeamSidebar/>
   <div className='w-screen h-screen flex justify-end '>
     <div className='w-[80%] h-full bg-white text-black '>
@@ -54,7 +54,7 @@ const App = () => {
   <div class="...">{data.name}</div>
   <div class="...">{data.role}</div>
   <div class="...">{data.department}</div>
-  <div class="w-40 text-blue-600 text-md">{data.email}</div>
+  <div class="w-40 text-blue-600 text-md overflow-hidden">{data.email}</div>
   <div class="max-w-40 overflow-hidden ml-3">{data.status}</div>
 </Link>
   )
