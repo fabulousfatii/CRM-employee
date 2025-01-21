@@ -3,7 +3,7 @@ import { User, Phone, Mail, Calendar, Building2, UserCircle, Activity } from 'lu
 import { useParams } from "react-router-dom";
 import axios from 'axios';
 import useHook from '../../hook/useHook';
-import TeamSidebar from '../../components/Sidebar/TeamSidebar';
+import TeamSidebar from '../../components/sidebar/TeamSidebar';
 
 const EmployeeDetails = () => {
  

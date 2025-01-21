@@ -1,5 +1,5 @@
 import React from 'react'
-import TeamSidebar from '../../components/Sidebar/TeamSidebar'
+import TeamSidebar from '../../components/sidebar/TeamSidebar'
 
 function TrainingEmployee() {
     return (

@@ -1,5 +1,5 @@
 import React from 'react'
-import TeamSidebar from './Sidebar/TeamSidebar'
+
 
 function Header() {
     return (
