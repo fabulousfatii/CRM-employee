@@ -8,7 +8,7 @@ const cors = require("cors")
 
 app.use(express.json());
 app.use('/api', userRouter);
-app.use(cors({ origin: env.process.FRONTEND_URL }))
+app.use(cors({ origin: process.env.FRONTEND_URL }))
 connectdb()
 
 
