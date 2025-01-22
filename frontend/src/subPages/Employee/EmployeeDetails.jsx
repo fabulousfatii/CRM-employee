@@ -4,15 +4,14 @@ import { useParams } from "react-router-dom";
 import axios from 'axios';
 import useHook from '../../hook/UseHook';
 import TeamSidebar from '../../components/sidebar/TeamSidebar';
+import Updateform from '../../components/employee/Updateform';
 
 const EmployeeDetails = () => {
  
-
+const [updateModel, setUpdateModel] = useState(false);
  const {employees}= useHook()
   const {id}=useParams()
-  console.log(id);
-  console.log(employees);
-  
+
   const employee = employees.find((user)=> user._id == id )
   console.log(employee);
   
@@ -26,14 +25,22 @@ const EmployeeDetails = () => {
     });
   };
 
+  const updatehandle = (msg) => {
+    if(msg === "clicked") setUpdateModel(true)
+    if(msg === "close") setUpdateModel(false)
+    
+  }
+
   return (
-    <div className=" min-h-screen bg-gray-50 p-8 w-screen h-screen flex justify-end ">
+    <div className=" min-h-screen bg-gray-50  w-screen h-screen flex justify-end ">
       <TeamSidebar/>
-      <section className="max-w-2xl mx-auto w-[80vw] h-[80%] border-blue-500">
+      
+      <section className="max-w-2xl mx-auto mt-10 w-[60%] h-[80%] flex gap-2 justify-between border-blue-500">
+        
+        <div>
         <header>
           <h1 className="text-2xl font-bold text-gray-800">Employee Profile</h1>
         </header>
-        <div>
           <div className="space-y-6">
           
             <div className="flex items-center space-x-4">
@@ -103,7 +110,18 @@ const EmployeeDetails = () => {
             </div>
           </div>
         </div>
+        <div className="flex flex-col text-blue-800 border-opacity-35 font-bold justify-start items-start p-3 space-x-4 rounded-xl border-sky-600 border-2 mt-10 w-60 h-40">
+          <h4 className='px-5'> Update employee</h4>
+  <button onClick={()=>updatehandle("clicked")} className="bg-green-500 hover:bg-green-700  text-white font-bold py-1 rounded-xl" >
+    Update
+  </button>
+          <h4 className='px-2 '> Delete employee</h4>
+  <button className="bg-rose-500 hover:bg-rose-700  text-white font-bold py-1 rounded-xl" onClick={() => console.log('Update button clicked')}>
+    delete
+  </button>
+</div>
       </section>
+    {updateModel && <Updateform employee={employee} onClick={()=>updatehandle("close")} />}
     </div>
   );
 };

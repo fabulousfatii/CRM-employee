@@ -35,7 +35,7 @@ const App = () => {
 
 </div>
 
-<div className='w-full grid grid-cols-6 gap-4 px-3 border-b-2 font-bold text-center py-2'>
+<div className='w-full grid grid-cols-6 gap-4 px-3 border-b-2 font-bold 2xl:text-lg text-center py-2'>
 <div class="...">ID</div>
   <div class="...">First name</div>
   <div class="...">Last name</div>
@@ -49,12 +49,12 @@ const App = () => {
   
   return(
 <Link to={`/team/${data._id}`} onClick={()=>{
-} }  key={index} className='w-full grid grid-cols-6 border-b-2 text-black gap-4 px-3 text-lg text-center  py-2 pb-2 cursor-pointer hover:bg-[#dcdcdd] '>
+} }  key={index} className='w-full grid grid-cols-6 border-b-2 2xl:text-lg text-black gap-4 px-3 text-md text-center  py-2 pb-2 cursor-pointer hover:bg-[#dcdcdd] '>
 <div class="">{data._id}</div>
   <div class="...">{data.name}</div>
   <div class="...">{data.role}</div>
   <div class="...">{data.department}</div>
-  <div class="w-40 text-blue-600 text-md overflow-hidden">{data.email}</div>
+  <div class="w-40 text-blue-600 text-md lg:overflow-hidden xl:overflow-visible">{data.email}</div>
   <div class="max-w-40 overflow-hidden ml-3">{data.status}</div>
 </Link>
   )
