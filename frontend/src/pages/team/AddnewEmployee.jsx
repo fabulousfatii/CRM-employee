@@ -41,7 +41,7 @@ const AddnewEmployee = () => {
 
   return (
     <div className="min-h-screen w-screen flex items-center justify-center bg-gray-100">
-        <TeamSidebar/>
+        {/* <TeamSidebar/> */}
       <form
         onSubmit={handleSubmit(onSubmit)}
         className="bg-white p-8 rounded-lg shadow-md w-full max-w-md text-black"

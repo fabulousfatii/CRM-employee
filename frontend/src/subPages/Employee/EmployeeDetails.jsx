@@ -12,10 +12,11 @@ const [updateModel, setUpdateModel] = useState(false);
  const {employees}= useHook()
   const {id}=useParams()
 
+  
   const employee = employees.find((user)=> user._id == id )
   console.log(employee);
   
-
+ 
 
   const formatDate = (dateString) => {
     return new Date(dateString).toLocaleDateString('en-US', {

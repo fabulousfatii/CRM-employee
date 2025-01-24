@@ -2,6 +2,7 @@
 import TeamSidebar from './components/sidebar/TeamSidebar';
 import {Link} from "react-router-dom"
 import useHook from './hook/UseHook';
+import Hamburger from './components/Hamburger';
 
 const App = () => {
  
@@ -10,9 +11,10 @@ const App = () => {
   
   return (
   <main className='w-full h-screen bg-[#362e69] '> 
-  <TeamSidebar/>
+  {/* <Hamburger/> */}
+  {/* <TeamSidebar/> */}
   <div className='w-screen h-screen flex justify-end '>
-    <div className='w-[80%] h-full bg-white text-black '>
+    <div className='w-[80%] max-md:w-full h-full bg-white text-black '>
 
 
 <div className='w-full h-16 bg-[#f7f4f4] text-black mt-8 p-9 flex  justify-between items-center'>
