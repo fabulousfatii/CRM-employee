@@ -1,11 +1,10 @@
 
 
-import React, { useEffect, useRef, useState } from 'react'
+import React, {  useState } from 'react'
 import { NavLink } from 'react-router-dom'
 import TeamSidebar from './sidebar/TeamSidebar'
 import ServicesSidebar from './sidebar/ServicesSidebar'
 import HomeSidebar from './sidebar/HomeSidebar'
-import Hamburger from './Hamburger'
 import { gsap } from 'gsap'
 
 function Sidebar() {
@@ -45,7 +44,7 @@ function Sidebar() {
 
 
 
-<div  className=" sidebar left-0 fixed z-10 h-full flex xl:w-[17%] bg-[#362e69] max-md:transform max-md:-translate-x-full">
+<div  className=" sidebar left-0 fixed z-10 h-full flex xl:w-[17%] bg-[#362e69] max-[900px]:transform max-[900px]:-translate-x-full">
     <div className="flex flex-col sm:flex-row max:mad:mt-20 ">
 
         <div className=' py-10 font-light flex flex-col gap-1 bg-[#0e0f4b]  '>

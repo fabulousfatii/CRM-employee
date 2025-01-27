@@ -1,5 +1,4 @@
 import React from 'react'
-import TeamSidebar from '../../components/sidebar/TeamSidebar'
 import { useForm } from 'react-hook-form';
 
 const AddnewEmployee = () => {

@@ -44,5 +44,20 @@ const updateEmployee = async (req, res) => {
     }
 }
 
+//delete employee
+const deleteEmployee = async (req, res) => {
+    try {
+        const {_id} = req.params
+        const deletedEmployee = await employees.findByIdAndDelete(_id);
+        if (!deletedEmployee) {
+            res.status(400).json({ message: 'Error deleting employee' });
+        } else {
+            res.json({ message: 'Employee deleted successfully' });
+        }
+    } catch (err) {
+        res.status(500).json({ message: err.message });
+    }
+}
 
-module.exports= {getEmployeedata,newEmployee,updateEmployee}
+
+module.exports= {getEmployeedata,newEmployee,updateEmployee,deleteEmployee}

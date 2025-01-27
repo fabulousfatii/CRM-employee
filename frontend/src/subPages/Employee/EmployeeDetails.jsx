@@ -33,12 +33,12 @@ const [updateModel, setUpdateModel] = useState(false);
   }
 
   return (
-    <div className=" min-h-screen bg-gray-50  w-screen h-screen flex justify-end ">
-      <TeamSidebar/>
+    <div className=" min-h-screen bg-gray-50  w-screen h-screen flex justify-end max-sm:flex-col-reverse max-sm:pt-10">
       
-      <section className="max-w-2xl mx-auto mt-10 w-[60%] h-[80%] flex gap-2 justify-between border-blue-500">
+      
+      <section className=" max-w-2xl mx-auto mt-10 w-[60%] h-[80%] max-md:w-full max-md:pt-5  max-sm:flex-col-reverse flex gap-4 justify-between border-blue-500">
         
-        <div>
+        <div className="section-A">
         <header>
           <h1 className="text-2xl font-bold text-gray-800">Employee Profile</h1>
         </header>
@@ -111,7 +111,8 @@ const [updateModel, setUpdateModel] = useState(false);
             </div>
           </div>
         </div>
-        <div className="flex flex-col text-blue-800 border-opacity-35 font-bold justify-start items-start p-3 space-x-4 rounded-xl border-sky-600 border-2 mt-10 w-60 h-40">
+        <div className='section-B'>
+        <div className="flex flex-col text-blue-800 border-opacity-35 font-bold justify-start items-start p-3 space-x-4 rounded-xl border-sky-600 border-2 mt-10 w-60 h-40 max-md:h-fit">
           <h4 className='px-5'> Update employee</h4>
   <button onClick={()=>updatehandle("clicked")} className="bg-green-500 hover:bg-green-700  text-white font-bold py-1 rounded-xl" >
     Update
@@ -120,7 +121,28 @@ const [updateModel, setUpdateModel] = useState(false);
   <button className="bg-rose-500 hover:bg-rose-700  text-white font-bold py-1 rounded-xl" onClick={() => console.log('Update button clicked')}>
     delete
   </button>
+      </div>
+
+      <div className="TASKS flex flex-col text-blue-800 border-opacity-35 font-bold justify-start items-start p-3  rounded-xl border-sky-600 border-2 mt-5 w-96  max-md:h-fit">
+  <h4 className='p-3 font-bold text-2xl text-center'> Tasks</h4>
+  <div className="">
+    
+    {employee?.tasks.map((task, index) => {
+      return (
+        <div key={index} className="flex items-center  bg-[#dedddf] px-4 my-2 rounded-lg">
+    
+          <div>
+            <p className="text-sm text-blue-700">{task.title}</p>
+            <p className="text-lg font-medium text-gray-900">{task.description}</p>
+            <p className="text-sm  text-green-700">{task.active=== true? "Active":""}</p>
+          </div>
+        </div>
+      );
+    })}
+    
+  </div>
 </div>
+        </div>
       </section>
     {updateModel && <Updateform employee={employee} onClick={()=>updatehandle("close")} />}
     </div>

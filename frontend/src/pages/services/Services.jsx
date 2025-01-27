@@ -1,5 +1,4 @@
 import React from 'react'
-import ServicesSidebar from '../../components/sidebar/ServicesSidebar'
 
 function Services() {
     return (
