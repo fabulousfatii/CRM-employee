@@ -11,6 +11,39 @@ const taskSchema = new mongoose.Schema({
   department: { type: String, required: true },
 });
 
+const LeaveSchema = new mongoose.Schema({
+  daysCount: {
+    type: Number,
+    required: true,
+  },
+  email: {
+    type: String,
+    required: true,
+    trim: true,
+    lowercase: true,
+    match: [/.+@.+\..+/, "Please enter a valid email address"],
+  },
+  startDate: {
+    type: Date,
+    required: true,
+  },
+  endDate: {
+    type: Date,
+    required: true,
+  },
+  status: {
+    type: String,
+    // enum: ["Pending", "Approved"], // Fewer options for status
+    // default: "Pending",
+    required: true,
+  },
+  type: {
+    type: String,
+    enum: ["Annual Leave", "Sick Leave"], // Only two options for type
+    required: true,
+  },
+});
+
 const employee_schema = new mongoose.Schema({
   _id: { type: Number, required: true },
   name: { type: String, required: true },
@@ -21,6 +54,7 @@ const employee_schema = new mongoose.Schema({
   status: { type: String, enum: ['Active', 'Inactive'], required: true },
   joiningDate: { type: Date, required: true },
   tasks: [taskSchema],
+  leaves:[LeaveSchema]
 });
 const employees = model('employees', employee_schema);
 module.exports= employees

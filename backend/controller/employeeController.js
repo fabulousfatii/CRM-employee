@@ -32,8 +32,8 @@ const newEmployee = async (req, res) => {
 const updateEmployee = async (req, res) => {
     try {
         const {_id}= req.params
-        const {joiningDate, name, role, email, phone, department, status } = req.body;
-        const updatedEmployee = await employees.findByIdAndUpdate(_id , {joiningDate,_id, name, role, email, phone, department, status, }, { new: true });
+        const {joiningDate, name, role, email, phone, department, status,tasks, leaves } = req.body;
+        const updatedEmployee = await employees.findByIdAndUpdate(_id , {joiningDate,_id, name, role, email, phone, department, status,tasks, leaves }, { new: true });
         if (!updatedEmployee) {
             res.status(400).json({ message: 'Error updating employee' });
         } else {
