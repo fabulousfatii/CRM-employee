@@ -11,6 +11,7 @@ import AddnewEmployee from './pages/team/AddnewEmployee'
 import Team from './pages/team/Team'
 import Services from './pages/services/Services'
 import About from './pages/home/About'
+import Leaves from './pages/team/Leaves'
 function AppRoutes() {
     return (
       <>
@@ -29,6 +30,7 @@ function AppRoutes() {
             <Route path="performance" element={<PerformanceEmployee/>} />
             <Route path="training" element={<TrainingEmployee/>} />
             <Route path="addnew" element={<AddnewEmployee/>} />
+            <Route path="leaves" element={<Leaves/>} />
             <Route path="employee" element={<App/>} />
             <Route path=":id" element={< EmployeeDetails/>} />
           </Route>

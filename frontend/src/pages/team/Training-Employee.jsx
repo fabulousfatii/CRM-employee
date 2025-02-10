@@ -7,8 +7,9 @@ function TrainingEmployee() {
         taskTitle: '',
         taskDate: '',
         assignedTo: '',
+        department: '',
         category: '',
-        description: ''
+        description: '',
     })
     // console.log(employees[0].name);
     
@@ -18,57 +19,57 @@ function TrainingEmployee() {
             ...formData,
             [e.target.name]: e.target.value
         })
-
         
     }
 
     const handleSubmit=(e)=>{
         e.preventDefault()
-        //console.log(e);
+     
         
-        const newtask= {
-            active:false,
-            category: formData.category,
-            completed:false,
-            failed:false,
-            newTask:true,
-            taskDate:formData.taskDate,
-            taskDescription:formData.description,
-            taskTitle:formData.taskTitle,
-            email:formData.assignedTo
-        }
+       
+        const newtask = {
+        title: formData.taskTitle,
+        dactive: true,
+        assignedDate: Date.now().toLocaleString(),
+        category: formData.category,
+        completed: false,
+        department: formData.department,                                  
+        description: formData.description,
+        assignedDate: formData.taskDate,
+        assignedTo: formData.assignedTo,
+        
+        };
+
         console.log("newtask",newtask);
+        const updatedemployee = employees.find(emp => emp.email === formData.assignedTo)
+        updatedemployee.tasks.push(newtask)
+        // console.log("employee",updatedemployee);
 
-        // const updatedtask= data.employee.map((e)=>{
-        //    if (e.email== formData.assignedTo){
-        //     console.log(e);
-        //     return{
-        //         ...e,
-        //         taskNumbers:{
-        //             ...e.taskNumbers,
-        //             newTask: e.taskNumbers.newTask +1,
-        //         }
-        //         ,tasks:[ 
-        //             ...e.tasks,
-        //             newtask
-        //          ]
-        //     }
-            
-        //    }
-        //    return e
-        // })
-
-        
-
+        try {
+            const response =  fetch(`/api/employees/${updatedemployee._id}`, {
+              method: "PUT",
+              headers: {
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify(updatedemployee),
+            })
+            console.log(updatedemployee);
+            if (response.ok) {
+              console.log("Task created successfully");
+            }
+      } catch (error) {
+        console.error("Error:", error);
+      }
         setFormData({
                     taskTitle: '',
                     taskDate: '',
                     assignedTo: '',
                     category: '',
-                    description: ''
+                    description: '',
+                    department: '',
                 })
 
-        window.location.reload()        
+       // window.location.reload()        
         
     }
 
@@ -93,7 +94,7 @@ function TrainingEmployee() {
                             <input 
                                 type="text"
                                 name="taskTitle"
-                                value={formData.taskTitle}
+                                 value={formData.taskTitle}
                                 onChange={handleChange}
                                 className='w-full p-2 rounded-lg bg-gray-200 '
                                 placeholder='Enter task title'
@@ -105,7 +106,7 @@ function TrainingEmployee() {
                             <input 
                                 type="date"
                                 name="taskDate"
-                                value={formData.taskDate}
+                               value={formData.taskDate}
                                 onChange={handleChange}
                                 className='w-full p-2 rounded-lg bg-gray-200 '
                             />
@@ -115,7 +116,7 @@ function TrainingEmployee() {
                             <label className='block  mb-2'>Assign To</label>
                             <select 
                                 name="assignedTo"
-                                value={formData.assignedTo}
+                                 value={formData.assignedTo}
                                 onChange={handleChange}
                                 className='w-full p-2 rounded-lg bg-gray-200 '
                             >
@@ -130,7 +131,7 @@ function TrainingEmployee() {
                             <label className='block  mb-2'>Category</label>
                             <select 
                                 name="category"
-                                value={formData.category}
+                                //value={formData.department}
                                 onChange={handleChange}
                                 className='w-full p-2 rounded-lg bg-gray-200 '
                             >
@@ -171,7 +172,7 @@ function TrainingEmployee() {
                         <div key={index} className='w-full p-4 bg-gray-100 rounded-lg'>
                             <div className=' justify-between items-center'>
                                 <h3 className='text-xl font-bold '>{employee?.name}</h3>
-                                <span className='text-gray-400'>Active Tasks: {employee?.status}</span>
+                                {/* <span className='text-gray-400'>Active Tasks: {employee?.status[length]}</span> */}
                                 {employee?.tasks.map((task, index) => (
                                     <div  className='mt-2 p-2 bg-gray-300 rounded'>
                                     <p className=''>{task?.title}</p>

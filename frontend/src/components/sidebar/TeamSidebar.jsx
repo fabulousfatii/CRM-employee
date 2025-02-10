@@ -18,6 +18,12 @@ function TeamSidebar() {
                     </span>
                     
                 </NavLink>
+                <NavLink to={"/team/leaves"} className={({ isActive })=>` ${isActive? "bg-[#514699]":"" } hover:bg-[#514699] flex items-center p-2  transition-colors dark:hover:text-white max-md:justify-end duration-200  text-white hover:text-blue-600 `}>
+                    <span class="mx-4  text-lg font-normal">
+                       Leaves
+                    </span>
+                    
+                </NavLink>
                 <NavLink to={"/team/addnew"} className={({ isActive })=>` ${isActive? "bg-[#514699]":"" } hover:bg-[#514699] flex items-center p-2  transition-colors dark:hover:text-white max-md:justify-end max-md:text-end duration-200  text-white hover:text-blue-600 `}>
                     <span class="mx-4  text-lg font-normal">
                        Add new Employee
