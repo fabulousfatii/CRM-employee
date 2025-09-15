@@ -1,87 +1,103 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { useForm } from 'react-hook-form';
+import axios from "axios"
+import { User, Mail, Shield, Key, Phone, Building, Loader2 } from 'lucide-react'
 
 const AddnewEmployee = () => {
   const {
     register,
     handleSubmit,
     formState: { errors },
+    reset,
   } = useForm();
+  const [isLoading, setIsLoading] = useState(false);
 
+  axios.defaults.withCredentials = true
 
-  const onSubmit = (data) => {
+  const onSubmit = async (data) => {
+    setIsLoading(true);
     console.log(data);
     const formattedData = {
-    
       ...data,
-      phone: Number(data.phone), 
-      status: "Active", 
-      joiningDate: new Date().toString(), // Current date and time
+      phone: Number(data.phone),
+      status: "Active",
     };
 
     console.log("Submitted Data:", formattedData);
 
-    //Api call to add new employee
+    // Api call to add new employee
     try {
-        const response =  fetch("/api/employees", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(formattedData),
-        })
-        if (response.ok) {
-            alert("Product added successfully!");}
-         reset()
-  } catch (error) {
-    console.error("Error:", error);
-  }
-}
+      const response = await axios.post("/api/auth/register", formattedData);
+      if (response) {
+        alert("Employee added successfully!");
+        console.log(response);
+        reset();
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
-    <div className="min-h-screen w-screen flex items-center justify-center bg-gray-100">
+    <div className="min-h-screen overflow-x-hidden pl-32 flex  flex-col items-center justify-center ">
         {/* <TeamSidebar/> */}
+        <h2 className="text-2xl font-bold mb-6  text-blue-900">Add New Employee</h2>
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="bg-white p-8 rounded-lg shadow-md w-full max-w-md text-black"
+        className="bg-gray-100 p-8 rounded-xl flex gap-4 shadow-xl w-full max-w-4xl text-black border border-gray-200"
       >
-        <h2 className="text-2xl font-bold mb-6 text-center text-blue-900">Add New Employee</h2>
+        
 
-        <div className="">
-          <label htmlFor="id" className="block text-sm font-medium text-gray-700"> Id </label>
+        <div className='w-1/2'>
+
+        <div className="mb-4">
+          <label htmlFor="employeeId" className=" text-sm font-medium  flex items-center gap-1">
+            Employee Id <User size={16} />
+          </label>
           <input
-            id="id"
-            {...register("id_", { required: "Name is required" })}
-            type="number"
-            className=" bg-gray-300 block w-full p-2 rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+            id="employeeId"
+            type="text"
+            placeholder="Enter employee ID"
+            {...register("employeeId", { required: "Employee ID is required" })}
+            className="bg-gray-100 text-black w-full p-3 rounded-md border border-indigo-800 shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 sm:text-sm transition"
           />
-          {errors.name && <p className="text-red-500 text-sm ">{errors.name.message}</p>}
+          {errors.employeeId && <p className="text-red-600 text-sm mt-1">{errors.employeeId.message}</p>}
         </div>
 
-        <div className="">
-          <label htmlFor="name" className="block text-sm font-medium text-gray-700"> Name </label>
+        <div className="mb-4">
+          <label htmlFor="name" className=" text-sm font-medium  flex items-center gap-1">
+            Name <User size={16} />
+          </label>
           <input
             id="name"
             {...register("name", { required: "Name is required" })}
             type="text"
-            className=" bg-gray-300 block w-full p-2 rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+            placeholder="Enter full name"
+            className="bg-gray-100 text-black w-full p-3 rounded-md border border-indigo-800 shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 sm:text-sm transition"
           />
-          {errors.name && <p className="text-red-500 text-sm ">{errors.name.message}</p>}
+          {errors.name && <p className="text-red-600 text-sm mt-1">{errors.name.message}</p>}
         </div>
 
-        <div className="">
-          <label htmlFor="role" className="block text-sm font-medium text-gray-700"> Role</label>
+        <div className="mb-4">
+          <label htmlFor="role" className=" text-sm font-medium  flex items-center gap-1">
+            Role <Shield size={16} />
+          </label>
           <input
             id="role"
             {...register("role", { required: "Role is required" })}
             type="text"
-            className=" bg-gray-300 block p-2 w-full rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+            placeholder="Enter role"
+            className="bg-gray-100 text-black p-3 w-full rounded-md border border-indigo-800 shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 sm:text-sm transition"
           />
-          {errors.role && <p className="text-red-500 text-sm ">{errors.role.message}</p>}
+          {errors.role && <p className="text-red-600 text-sm mt-1">{errors.role.message}</p>}
         </div>
 
-        <div className="">
-          <label htmlFor="email" className="block text-sm font-medium text-gray-700"> Email </label>
+        <div className="mb-4">
+          <label htmlFor="email" className=" text-sm font-medium  flex items-center gap-1">
+            Email <Mail size={16} />
+          </label>
           <input
             id="email"
             {...register("email", {
@@ -92,13 +108,39 @@ const AddnewEmployee = () => {
               },
             })}
             type="email"
-            className=" bg-gray-300 block w-full p-2 rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+            placeholder="Enter email address"
+            className="bg-gray-100 text-black w-full p-3 rounded-md border border-indigo-800 shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 sm:text-sm transition"
           />
-          {errors.email && <p className="text-red-500 text-sm ">{errors.email.message}</p>}
+          {errors.email && <p className="text-red-600 text-sm mt-1">{errors.email.message}</p>}
         </div>
 
-        <div className="">
-          <label htmlFor="phone" className="block text-sm font-medium text-gray-700">Phone</label>
+        </div>
+
+        <div className='w-1/2'>
+
+        <div className="mb-4">
+          <label htmlFor="password" className=" text-sm font-medium  flex items-center gap-1">
+            Password <Key size={16} />
+          </label>
+          <input
+            id="password"
+            {...register("password", {
+              required: "Password is required",
+              minLength: {
+                value: 10,
+                message: "Password must be at least 10 characters",
+              },
+            })}
+            type="password"
+            placeholder="Enter password"
+            className="bg-gray-100 text-black  w-full p-3 rounded-md border border-indigo-800 shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 sm:text-sm transition"
+          />
+          {errors.password && <p className="text-red-600 text-sm mt-1">{errors.password.message}</p>}
+        </div>
+        <div className="mb-4">
+          <label htmlFor="phone" className=" text-sm font-medium  flex items-center gap-1">
+            Phone <Phone size={16} />
+          </label>
           <input
             id="phone"
             {...register("phone", {
@@ -109,31 +151,41 @@ const AddnewEmployee = () => {
               },
             })}
             type="tel"
-            className=" bg-gray-300 block w-full p-2 rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+            placeholder="Enter phone number"
+            className="bg-gray-100 text-black w-full p-3 rounded-md border border-indigo-800 shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 sm:text-sm transition"
           />
-          {errors.phone && <p className="text-red-500 text-sm ">{errors.phone.message}</p>}
+          {errors.phone && <p className="text-red-600 text-sm mt-1">{errors.phone.message}</p>}
         </div>
 
-        <div className="">
-          <label htmlFor="department" className="block text-sm font-medium text-gray-700"> Department</label>
+        <div className="mb-6">
+          <label htmlFor="department" className=" text-sm font-medium  flex items-center gap-1">
+            Department <Building size={16} />
+          </label>
           <input
             id="department"
             {...register("department", { required: "Department is required" })}
             type="text"
-            className=" bg-gray-300 block w-full p-2 rounded-md border-gray-300 shadow-sm focus:ring-blue-500 focus:border-blue-500 sm:text-sm"
+            placeholder="Enter department"
+            className="bg-gray-100 text-black w-full p-3 rounded-md border border-indigo-800 shadow-sm focus:ring-2 focus:ring-blue-500 focus:border-blue-500 sm:text-sm transition"
           />
-          {errors.department && <p className="text-red-500 text-sm ">{errors.department.message}</p>}
+          {errors.department && <p className="text-red-600 text-sm mt-1">{errors.department.message}</p>}
         </div>
 
         <button
           type="submit"
-          className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+          disabled={isLoading}
+          className={`w-full flex justify-center items-center gap-2 bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition ${
+            isLoading ? 'cursor-not-allowed opacity-70' : ''
+          }`}
         >
+          {isLoading && <Loader2 className="animate-spin h-5 w-5" />}
           Submit
         </button>
+        </div>
       </form>
     </div>
-  )};
+  );
+};
 
 
 export default AddnewEmployee

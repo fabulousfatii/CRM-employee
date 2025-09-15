@@ -1,8 +1,18 @@
-import React, { useState } from 'react';
+import { useEffect, useState } from 'react';
 import useHook from '../../hook/UseHook';
+import axios from 'axios'
+import TaskTable from '../../components/tasks/TaskTable';
+import TaskProgress from '../../components/tasks/TaskProgress';
+
 
 function TrainingEmployee() {
-    const {employees}= useHook()
+    const {employees,tasks,tasksdata}= useHook()
+useEffect(()=>{
+        tasksdata()
+  },[])
+
+//   console.log({tasks})
+    const [createTask,setCreateTask] = useState(false)
     const [formData, setFormData] = useState({
         taskTitle: '',
         taskDate: '',
@@ -22,40 +32,35 @@ function TrainingEmployee() {
         
     }
 
-    const handleSubmit=(e)=>{
+    const handleSubmit= async(e)=>{
         e.preventDefault()
      
-        
-       
-        const newtask = {
+         const employee = employees.find(emp => emp.email === formData.assignedTo)
+
+         const newtask = {
+
+        userid: employee._id,
+        email:employee.email,    
         title: formData.taskTitle,
-        dactive: true,
-        assignedDate: Date.now().toLocaleString(),
+        active: false,
+        dueDate: formData.taskDate,
         category: formData.category,
         completed: false,
-        department: formData.department,                                  
+        department: formData.department, 
         description: formData.description,
-        assignedDate: formData.taskDate,
-        assignedTo: formData.assignedTo,
         
         };
 
         console.log("newtask",newtask);
-        const updatedemployee = employees.find(emp => emp.email === formData.assignedTo)
-        updatedemployee.tasks.push(newtask)
-        // console.log("employee",updatedemployee);
+        
 
         try {
-            const response =  fetch(`/api/employees/${updatedemployee._id}`, {
-              method: "PUT",
-              headers: {
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify(updatedemployee),
-            })
-            console.log(updatedemployee);
-            if (response.ok) {
+            const response = await axios.post(`/api/tasks/createtask`, newtask)
+            // console.log(updatedemployee);
+            if (response) {
               console.log("Task created successfully");
+              console.log(response);
+              
             }
       } catch (error) {
         console.error("Error:", error);
@@ -69,56 +74,81 @@ function TrainingEmployee() {
                     department: '',
                 })
 
-       // window.location.reload()        
-        
     }
 
-   
+    const deleteTask = async (taskId) => {
+        console.log("Deleting task with ID:", taskId);
+        try {
+            const response = await axios.delete(`/api/tasks/deletetask/${taskId}`);
+            if (response) {
+                console.log("Task deleted successfully");
+                tasksdata(); // Refresh tasks
+            }
+        } catch (error) {
+            console.error("Error deleting task:", error);
+        }
+    };
+
+    const updateTask = async (task) => {
+        try {
+            const updatedtask= {...task,completed:true, active:false}
+            console.log(updatedtask);
+            
+            const response = await axios.put(`/api/tasks/updatetask/${task._id}`, updatedtask);
+            if (response) {
+                console.log("Task updated successfully");
+                tasksdata(); // Refresh tasks
+            }
+        } catch (error) {
+            console.error("Error updating task:", error);
+        }
+    };
+    
     
     return (
-        <div className='w-[98.5vw] max-[900px]:w-[90vw] mt-10 h-full  pl-[17%] bg-white overflow-hidden '>
-            <div className='flex justify-between items-center mb-8'>
-                <h1 className='text-3xl font-bold text-blue-900 ml-7 '>Create New Task</h1>
-                {/* <button 
-                    onClick={handleLogout}
-                    className='px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600'
-                >
-                    Logout
-                </button> */}
+        <div className='w-[98.5vw] max-[900px]:w-[90vw] mt-10 h-full  pl-[17%] overflow-hidden '>
+         <button
+                 onClick={()=>setCreateTask(true)}
+                 disabled={createTask}
+                 className='text-xl p-2 text-white font-bold mt-2 bg-indigo-900 ml-16 '>Create New Task</button>
+
+            <div className='flex justify-between items-center mb-5'>
+
+              {/* create new task form   */}
             </div>
-            <div className=' w-[84vw] max-w-5xl  mx-auto mt-8 p-6 text-black bg-gray-300 rounded-lg'>
+            {createTask? <div className='  max-w-4xl  mx-auto  p-6 text-black text-sm bg-gray-300 border-2 border-indigo-900  backdrop-blur-lg rounded-lg'>
                 <form onSubmit={handleSubmit} className='flex gap-6'>
-                    <div className='flex-1 space-y-4'>
+                    <div className='flex-1 space-y-1'>
                         <div>
-                            <label className='block  mb-2'>Task Title</label>
+                            <label className='block  mb-1'>Task Title</label>
                             <input 
                                 type="text"
                                 name="taskTitle"
                                  value={formData.taskTitle}
                                 onChange={handleChange}
-                                className='w-full p-2 rounded-lg bg-gray-200 '
+                                className='w-full p-1 rounded-lg bg-slate-50 border border-indigo-900'
                                 placeholder='Enter task title'
                             />
                         </div>
                         
                         <div>
-                            <label className='block  mb-2'>Due Date</label>
+                            <label className='block  mb-1'>Due Date</label>
                             <input 
                                 type="date"
                                 name="taskDate"
                                value={formData.taskDate}
                                 onChange={handleChange}
-                                className='w-full p-2 rounded-lg bg-gray-200 '
+                                className='w-full p-1 rounded-lg bg-slate-50 border border-indigo-900'
                             />
                         </div>
 
                         <div>
-                            <label className='block  mb-2'>Assign To</label>
+                            <label className='block  mb-1'>Assign To</label>
                             <select 
                                 name="assignedTo"
                                  value={formData.assignedTo}
                                 onChange={handleChange}
-                                className='w-full p-2 rounded-lg bg-gray-200 '
+                                className='w-full p-1 rounded-lg bg-slate-50 border border-indigo-900'
                             >
                                 <option value="">Select Employee</option>
                                 {employees?.map((emp, index) => (
@@ -128,12 +158,12 @@ function TrainingEmployee() {
                         </div>
 
                         <div>
-                            <label className='block  mb-2'>Category</label>
+                            <label className='block  mb-1'>Category</label>
                             <select 
                                 name="category"
                                 //value={formData.department}
                                 onChange={handleChange}
-                                className='w-full p-2 rounded-lg bg-gray-200 '
+                                className='w-full p-1 rounded-lg bg-slate-50 border border-indigo-900'
                             >
                                 <option value="">Select Category</option>
                                 <option value="development">Development</option>
@@ -145,50 +175,39 @@ function TrainingEmployee() {
 
                         <button 
                             type="submit"
-                            className='w-full bg-blue-900 text-gray-100 py-2 px-4 rounded-lg font-bold hover:bg-yellow-500 transition-colors'
+                            className='w-full bg-blue-900 text-gray-100 py-2 px-4 rounded-lg font-bold hover:bg-blue-500 transition-colors'
                         >
                             Create Task
                         </button>
                     </div>
 
                     <div className='flex-1'>
-                        <label className='block  mb-2'>Description</label>
+                        <label className='block  mb-1'>Description</label>
                         <textarea
                             name="description"
                             value={formData.description}
                             onChange={handleChange}
-                            className='w-full p-2 rounded-lg bg-gray-200  h-1/2'
+                            className='w-full p-1 rounded-lg bg-slate-50 border border-indigo-900 h-1/2'
                             placeholder='Enter task description '
                         ></textarea>
                     </div>
                 </form>
-            </div>
-
-            {/* all tasks */}
-            <div className='mt-8 ml-7 w-[90%]'>
-                <h2 className='text-2xl font-bold text-blue-900 mb-4'>Employee Tasks</h2>
-                <div className='space-y-4 text-black'>
-                    {employees?.map((employee, index) => (
-                        <div key={index} className='w-full p-4 bg-gray-100 rounded-lg'>
-                            <div className=' justify-between items-center'>
-                                <h3 className='text-xl font-bold '>{employee?.name}</h3>
-                                {/* <span className='text-gray-400'>Active Tasks: {employee?.status[length]}</span> */}
-                                {employee?.tasks.map((task, index) => (
-                                    <div  className='mt-2 p-2 bg-gray-300 rounded'>
-                                    <p className=''>{task?.title}</p>
-                                    <p className='text-sm text-gray-400'> {task?.date}</p>
-                                </div>
-                                ))}
-                            </div>
-                            <div className='mt-2'>
+               <div className='flex justify-end'>
+                 <button className='text-white border border-red-700 bg-red-700' onClick={()=>setCreateTask(false)}>close</button>
+               </div>
+            </div> : null}
 
 
-                            </div>
-                        </div>
-                    ))}
+          {/* progress */}
+           <TaskProgress tasks={tasks}/>
+          
+
+     {/* task table */}
+    <TaskTable tasks={tasks} onDelete={deleteTask} onUpdate={updateTask}/>
+
                 </div>
-            </div>
-        </div>
+               
+           
 )}
 
 export default TrainingEmployee

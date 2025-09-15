@@ -1,5 +1,7 @@
 
 const employees= require("../model/employee.model")
+const attendence = require("../model/attendence.model")
+const { Types } = require("mongoose");
 
 //getting data
 const getEmployeedata= async(req,res)=>{
@@ -59,5 +61,91 @@ const deleteEmployee = async (req, res) => {
     }
 }
 
+const addLeaveToEmployee = async (req,res) => {
+   
+    try {
+        const id = req.params?._id;
+        const {description,email,startDate,endDate ,status,daysCount,type,name} = req.body;
+        if (!id) {
+          throw new Error("Employee ID is required");
+        }
+        if (!description || !email || !startDate || !endDate || !status || !daysCount || !type) {
+          throw new Error("All fields are required");
+        }
+        const leaveData = {description,email,startDate,endDate ,status,daysCount,type,name};
+      const employee = await employees.findById(id)
+      if (!employee) {
+        throw new Error("Employee not found");
+      }
+  
+      // Add the leave to the employee's leaves array
+      employee.leaves.push(leaveData);
+  
+      // Save the updated employee document
+      await employee.save();
+  
+      return res.json({ success: true, message: "Leave added successfully", employee });
+    } catch (error) {
+      console.error(error);
+      return res.status(500).json({ success: false, message: error.message });
+    }
+  };
 
-module.exports= {getEmployeedata,newEmployee,updateEmployee,deleteEmployee}
+const getLoginEmployee = async (req, res) => {
+    try {
+        // console.log(req.body)
+        const { userId } = req.body;
+        
+        const user = await employees.findById(userId);
+        console.log(`user is : ${user}`)
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+
+        return res.status(200).json({
+            message: "success",
+            userdata: user
+        });
+    } catch (error) {
+        res.status(500).json({ message: err.message });
+    }
+}
+
+//get employee-attendance
+const displayEmployeeAttendance = async (req, res) => {
+    try {
+      const { employeeId } = req.params; //  employeeId is passed as a route parameter
+  
+     
+      if (!employeeId) {
+        return res.status(400).json({ message: "Employee ID is required." });
+      }
+  
+      // Fetch attendance using $match 
+      const attendanceRecords = await attendence.aggregate([
+        {
+          $match: {
+            employeeId: new Types.ObjectId(employeeId), // Match attendance records for the given employee ID
+          },
+        },
+        {
+          $sort: { date: -1 }, 
+        },
+      ]);
+  
+      // Return the attendance records
+      if (attendanceRecords.length === 0) {
+        return res.status(404).json({ message: "No attendance records found." });
+      }
+  
+      res.status(200).json(attendanceRecords);
+    } catch (error) {
+      console.error("Error fetching attendance:", error);
+      res.status(500).json({ message: "Internal server error." });
+    }
+  };
+
+
+
+module.exports= {getEmployeedata,newEmployee,updateEmployee,deleteEmployee,getLoginEmployee,
+    addLeaveToEmployee,displayEmployeeAttendance}

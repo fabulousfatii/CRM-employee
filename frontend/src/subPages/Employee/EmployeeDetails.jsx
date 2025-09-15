@@ -9,7 +9,12 @@ import Updateform from '../../components/employee/Updateform';
 const EmployeeDetails = () => {
  
 const [updateModel, setUpdateModel] = useState(false);
- const {employees}= useHook()
+ const {employees,getuserdata}= useHook()
+ useEffect(()=>{
+  getuserdata()
+
+  
+},[])
   const {id}=useParams()
 
   
